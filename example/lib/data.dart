@@ -200,7 +200,7 @@ const adjustData = [
   {"label": "April", "type": "Search", "index": 3, "value": 0},
   {"label": "May", "type": "Search", "index": 4, "value": 0},
   {"label": "June", "type": "Search", "index": 5, "value": 0},
-  {"label": "July", "type": "Search", "index": 6, "value": 420},
+  {"label": "July", "type": "Search", "index": 6, "value": 1337},
 ];
 
 const scatterData = [

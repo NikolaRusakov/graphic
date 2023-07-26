@@ -267,9 +267,26 @@ class IntervalPage extends StatelessWidget {
                     IntervalMark(
                       position:
                           Varset('label') * Varset('value') / Varset('type'),
-                      shape: ShapeEncode(value: RectShape(labelPosition: 0.5)),
-                      color: ColorEncode(
-                          variable: 'type', values: Defaults.colors10),
+                      shape: ShapeEncode(
+                        value: RectShape(
+                            labelPosition: 0.5,
+                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                      ),
+                      color: ColorEncode(variable: 'label', values: [
+                        const Color(0xff5b8ff9),
+                        // const Color(0xff5b8ff9),
+                        const Color(0xfff6bd16),
+                        const Color(0xff5b8ff9),
+                        const Color(0xff5b8ff9),
+                        const Color(0xff5b8ff9),
+                        const Color(0xff5b8ff9),
+                        // const Color(0xfff6bd16),
+                        // const Color(0xfff6bd16),
+                        // const Color(0xfff6bd16),
+                        // const Color(0xfff6bd16),
+                        // const Color(0xfff6bd16),
+                        const Color(0xfff6bd16),
+                      ]),
                       label: LabelEncode(
                           encoder: (tuple) => Label(
                                 tuple['value'].toString(),
