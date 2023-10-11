@@ -260,33 +260,123 @@ class IntervalPage extends StatelessWidget {
                     ),
                     'value': Variable(
                       accessor: (Map map) => map['value'] as num,
-                      scale: LinearScale(min: 0, max: 1800),
+                      scale: LinearScale(min: -1800, max: 1800),
                     ),
                   },
                   marks: [
+                    // CustomMark(
+                    //   shape: ShapeEncode(value: DashedRecShape()),
+                    //   // position: Varset('time') *
+                    //   //     (Varset('start') +
+                    //   //         Varset('max') +
+                    //   //         Varset('min') +
+                    //   //         Varset('end')),
+                    //   position: Varset('index') * Varset('value'),
+                    //   color: ColorEncode(
+                    //     encoder: (p0) {
+                    //       return const Color(0xfbbaabb0);
+                    //     },
+                    //     // encoder: (tuple) => tuple['end'] >= tuple['start']
+                    //     //     ? Colors.red
+                    //     //     : Colors.green),
+                    //   ),
+                    // ),
                     IntervalMark(
-                      position:
-                          Varset('label') * Varset('value') / Varset('type'),
+                      position: Varset('index') * Varset('value'),
                       shape: ShapeEncode(
-                        value: RectShape(
-                            labelPosition: 0.5,
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
+                        // value: StyledRectShape(
+                        //   labelPosition: 0.5,
+                        //   borderRadius: BorderRadius.all(Radius.circular(5)),
+                        //   borderStyle: PaintStyle(
+                        //     // fillColor: const Color(0xfff6bd16).withOpacity(0.5),
+                        //     // dash: null,
+                        //     // strokeColor: null,
+                        //     // strokeWidth: null,
+                        //     dash: [4],
+                        //     strokeColor: const Color.fromARGB(234, 43, 0, 255),
+                        //     strokeWidth: 1,
+                        //   ),
+                        // ),
+
+                        encoder: (enc) {
+                          final borderByLabel =
+                              switch (enc['label'] as String) {
+                            'elec' => PaintStyle(
+                                fillColor:
+                                    const Color.fromARGB(255, 30, 182, 0),
+                                dash: null,
+                                strokeColor: null,
+                                strokeWidth: null,
+                              ),
+                            'gas' => PaintStyle(
+                                fillColor:
+                                    const Color(0xfff6bd16).withOpacity(0.5),
+                                // dash: null,
+                                // strokeColor: null,
+                                // strokeWidth: null,
+                                dash: [4],
+                                strokeColor:
+                                    const Color.fromARGB(234, 43, 0, 255),
+                                strokeWidth: 1,
+                              ),
+                            'gas_est' => PaintStyle(
+                                fillColor: const Color(0xff5b8ff9),
+                                dash: [2],
+                                strokeColor:
+                                    const Color.fromARGB(234, 43, 0, 255),
+                                strokeWidth: 2,
+                              ),
+                            _ => null
+                            // PaintStyle(
+                            //     fillColor: const Color(0xff5b8ff9),
+                            //     dash: null,
+                            //     strokeColor: null,
+                            //     strokeWidth: null,
+                            //   ),
+                          };
+                          return StyledRectShape(
+                            labelPosition: 0.3,
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                            borderStyle: borderByLabel,
+                            rowLabel: enc['label'] as String,
+                          );
+                          // return StyledRectShape(
+                          //   labelPosition: 0.5,
+                          //   borderRadius: BorderRadius.all(Radius.circular(5)),
+                          // );
+                        },
                       ),
-                      color: ColorEncode(variable: 'label', values: [
-                        const Color(0xff5b8ff9),
-                        // const Color(0xff5b8ff9),
-                        const Color(0xfff6bd16),
-                        const Color(0xff5b8ff9),
-                        const Color(0xff5b8ff9),
-                        const Color(0xff5b8ff9),
-                        const Color(0xff5b8ff9),
-                        // const Color(0xfff6bd16),
-                        // const Color(0xfff6bd16),
-                        // const Color(0xfff6bd16),
-                        // const Color(0xfff6bd16),
-                        // const Color(0xfff6bd16),
-                        const Color(0xfff6bd16),
-                      ]),
+                      tag: (enc) {
+                        return enc['label'] as String;
+                      },
+                      color: ColorEncode(
+                        // variable: 'label',
+                        encoder: (enc) {
+                          // enc;
+                          return switch (enc['label'] as String) {
+                            'gas' => const Color(0xff5b8ff9),
+                            'elec' => const Color.fromARGB(255, 30, 182, 0),
+                            'inject' => const Color(0xfff6bd16),
+                            _ => const Color(0xff5b8ff9),
+                          };
+                          // return const Color(0xfff6bd16);
+                        },
+                        // values: [
+                        //   const Color(0xff5b8ff9),
+                        //   // const Color(0xff5b8ff9),
+                        //   Color.fromARGB(255, 30, 182, 0),
+                        //   // const Color(0xff5b8ff9),
+                        //   // const Color(0xff5b8ff9),
+                        //   // const Color(0xff5b8ff9),
+                        //   // const Color(0xff5b8ff9),
+                        //   // const Color(0xfff6bd16),
+                        //   // const Color(0xfff6bd16),
+                        //   // const Color(0xfff6bd16),
+                        //   // const Color(0xfff6bd16),
+                        //   // const Color(0xfff6bd16),
+                        //   const Color(0xfff6bd16),
+                        // ],
+                      ),
                       label: LabelEncode(
                           encoder: (tuple) => Label(
                                 tuple['value'].toString(),
@@ -294,7 +384,7 @@ class IntervalPage extends StatelessWidget {
                                     textStyle: const TextStyle(fontSize: 8)),
                               )),
                       modifiers: [StackModifier()],
-                    )
+                    ),
                   ],
                   coord: RectCoord(
                     horizontalRangeUpdater: Defaults.horizontalRangeEvent,
